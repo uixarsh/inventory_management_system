@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
 from app.core.exceptions import (
@@ -18,6 +19,19 @@ app = FastAPI(
     title="Inventory & Order Management System",
     description="API for managing products, customers, and orders.",
     version="1.0.0",
+)
+
+origins = [
+    "http://localhost:5173",  # Default Vite dev port
+    "http://127.0.0.1:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,         # Allow specific origins
+    allow_credentials=True,        # Allow cookies & authorization headers
+    allow_methods=["*"],           # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],           # Allow all HTTP headers
 )
 
 # ---------------------------------------------------------------------------

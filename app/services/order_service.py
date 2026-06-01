@@ -94,11 +94,12 @@ def get_order(db: Session, order_id: UUID) -> Order:
 
 
 def get_all_orders(db: Session) -> list[Order]:
-    """Return all orders with eager-loaded relationships."""
     return (
         db.query(Order)
-        .options(joinedload(Order.customer), joinedload(Order.items))
-        .unique()
+        .options(
+            joinedload(Order.customer),
+            joinedload(Order.items)
+        )
         .all()
     )
 

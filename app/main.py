@@ -19,16 +19,12 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Inventory & Order Management System",
     description="API for managing products, customers, and orders.",
-    version="1.0.0",
+    version="1.0.0"
 )
-
-# Parse CORS origins from settings
-origins = [origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()]
-
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,         # Allow specific origins
+    allow_origins=settings.CORS_ORIGINS,         # Allow specific origins
     allow_credentials=True,        # Allow cookies & authorization headers
     allow_methods=["*"],           # Allow all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],           # Allow all HTTP headers
@@ -95,9 +91,9 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
 # Routers
 # ---------------------------------------------------------------------------
 
-app.include_router(products.router)
-app.include_router(customers.router)
-app.include_router(orders.router)
+app.include_router(products.router, prefix="/api/v1")
+app.include_router(customers.router, prefix="/api/v1")
+app.include_router(orders.router, prefix="/api/v1")
 
 
 @app.get("/", tags=["Health"])

@@ -3,29 +3,8 @@ services:
     build: .
     env_file:
       - .env
-    depends_on:
-      db:
-        condition: service_healthy
     volumes:
       - ./app:/app/app
-
-  db:
-    image: postgres:16-alpine
-    env_file:
-      - .env
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    # Only expose port internally to the docker network for security
-
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   nginx:
     image: nginx:alpine
@@ -35,6 +14,3 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - backend
-
-volumes:
-  postgres_data:

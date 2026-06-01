@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.core.config import settings
 from app.database import Base, engine
 from app.core.exceptions import (
     NotFoundError,
@@ -21,10 +22,9 @@ app = FastAPI(
     version="1.0.0",
 )
 
-origins = [
-    "http://localhost:5173",  # Default Vite dev port
-    "http://127.0.0.1:5173",
-]
+# Parse CORS origins from settings
+origins = [origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()]
+
 
 app.add_middleware(
     CORSMiddleware,

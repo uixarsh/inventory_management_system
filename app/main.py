@@ -13,14 +13,16 @@ from app.core.exceptions import (
 )
 from app.routers import products, customers, orders
 
-# Create all tables on startup
-Base.metadata.create_all(bind=engine)
-
 app = FastAPI(
     title="Inventory & Order Management System",
     description="API for managing products, customers, and orders.",
     version="1.0.0"
 )
+
+
+@app.on_event("startup")
+def startup():
+    Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,

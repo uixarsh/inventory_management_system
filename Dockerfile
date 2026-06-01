@@ -45,6 +45,6 @@ EXPOSE 8000
 USER appuser
 
 # Use Gunicorn as the production application server with Uvicorn workers
-CMD ["gunicorn", "app.main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "app.main:app", "--workers", "1", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
 
 
